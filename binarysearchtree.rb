@@ -21,7 +21,7 @@ module BinarySearchTree
       test_array = [1, 2, 3, 4, 8, 7, 17, 20, 24, 27, 30]
 
       @root = build_tree(test_array)
-      delete(24)
+      in_order()
       pretty_print()
     end
   
@@ -147,6 +147,18 @@ module BinarySearchTree
         return root_node.data
       end
     end
+
+    #    Find the leftmost node in any given tree, used in deletion function
+    #    For when a node has two children, to find the left-most node in a tree
+    def min_order root_node=@root
+      current = root_node
+
+      until current.left.nil?
+        current = current.left
+      end
+
+      return current
+    end
         
     
     def find value, root_node=@root
@@ -163,18 +175,41 @@ module BinarySearchTree
       end
     end
 
-    #    Find the leftmost node in any given tree, used in deletion function
-    #    For when a node has two children
-    def min_order root_node=@root
-      current = root_node
-
-      until current.left.nil?
-        current = current.left
-      end
-
-      return current
+    def level_order_iterative
+      #    TODO
     end
 
+    def level_order_recursive
+      #    TODO
+    end
+
+    def in_order
+      #    TODO
+    end
+
+    def pre_order
+      #    TODO
+    end
+
+    def post_order
+      #    TODO
+    end
+
+    def height
+      #    TODO
+    end
+
+    def depth
+      #    TODO
+    end
+
+    def balanced?
+      #    TODO
+    end
+
+    def rebalance
+      #    TODO
+    end
 
     #    Prints out visualization of the tree
     def pretty_print(node = @root, prefix = '', is_left = true)
@@ -185,12 +220,6 @@ module BinarySearchTree
       unless node.left.nil?
         pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
       end
-    end
-
-    def in_order root_node=@root
-      in_order(root_node.left)
-      print(root_node.data)
-      in_order(root_node.right)
     end
       
   
