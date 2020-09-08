@@ -21,7 +21,7 @@ module BinarySearchTree
       test_array = [1, 2, 3, 4, 8, 7, 17, 20, 24, 27, 30]
 
       @root = build_tree(test_array)
-      delete(20)
+      delete(24)
       pretty_print()
     end
   
@@ -104,41 +104,49 @@ module BinarySearchTree
       end
 
       if root_node.nil?
-        return 1
+        return root_node
       end
-      #    If node has two children
-      if root_node.right && root_node.left
+      #    If both left and right attr are nil
+      #    Orphan node by selecting parent left/right attr and setting to nil
+      if root_node.left.nil? && root_node.right.nil?
+        if root_node.data < root_node.parent.data
+          root_node.parent.left = nil
+        elsif root_node.data > root_node.parent.data
+          root_node.parent.right = nil
+        end
+      #    If two children with non-nil data
+      elsif root_node.right.data && root_node.left.data
+        #    Make root node min_order_node (leftmost node in rightmost subtree)
+        #    Delete min_order_node from original position
         min_order_node = min_order(root_node.right)
         temp = min_order_node.data
         delete(temp)
         root_node.data = temp
-      
-        #    Node has no subtrees, orphan node
-      elsif root_node.right.nil? && root_node.left.nil?
+      #    If non-nil left child
+      elsif root_node.left.data
+        if root_node.data < root_node.parent.data
+          #     Attach node child to parent left if root_node is parent left
+          root_node.parent.left = root_node.left
+        elsif root_node.data > root_node.parent.data
+          #    Attach node child to parent right if root_node is parent rightr
+          root_node.parent.right = root_node.left
+        end
+      #    Same process but for a right child
+      elsif root_node.right.data
+        if root_node.data < root_node.parent.data
+        root_node.parent.left = root_node.right
+        elsif root_node.data > root_node.parent.data
+          root_node.parent.right = root_node.right
+        end
+      else
         if root_node.data < root_node.parent.data
           root_node.parent.left = nil 
         elsif root_node.data > root_node.parent.data
           root_node.parent.right = nil
         end
         return root_node.data
-      #    Node has 1 child
-      else
-          #    If left child exists
-          unless root_node.left.nil?
-          
-            temp = root_node.left.data
-            delete(temp)
-            root_node.data = temp
-            return root_node.data
-          end
-          unless root_node.right.nil?
-            temp = root_node.right.data
-            delete(temp)
-            root_node.data = temp
-            return root_node.data
-          end
-        end
       end
+    end
         
     
     def find value, root_node=@root
