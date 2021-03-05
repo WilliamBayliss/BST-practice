@@ -18,11 +18,11 @@ module BinarySearchTree
   class Tree
     attr_reader :root
     def initialize
-      test_array = [1, 2, 3, 4, 8, 7, 17, 20, 24, 27, 30]
+      test_array = [1, 2, 3, 4, 8, 7, 17, 20, 24, 27, 28, 28, 30, 35, 37, 38]
 
       @root = build_tree(test_array)
-      in_order()
       pretty_print()
+      puts(level_order_iterative(@root))
     end
   
     def build_tree array
@@ -159,28 +159,64 @@ module BinarySearchTree
 
       return current
     end
-        
-    
+
+    #    If value not equal to current node, recursively iterate through the tree until it is found and return it
     def find value, root_node=@root
-      #    If value not equal to current node, recursively iterate through the tree until it is found and return it
       case value <=> root_node.data
-        when -1
-          find(value, root_node.left)
-        when 1
-          find(value, root_node.right)
-        when 0
-          return root_node
-        else
-          return
+      when -1
+        find(value, root_node.left)
+      when 1
+        find(value, root_node.right)
+      when 0
+        return root_node
+      else
+        return
       end
     end
 
-    def level_order_iterative
-      #    TODO
+    def level_order_iterative root_node
+      # Base case
+      return 0 if root_node.nil?
+
+      # Create empty array for queue
+      queue = [root_node]
+      height = 0
+
+      loop do
+        node_count = queue.length
+        return height if node_count.zero?
+
+        height += 1
+
+        while node_count.positive?
+          Node.new new_node = queue[0]
+          queue.shift
+
+          queue.append(new_node.left) unless new_node.left.nil?
+          queue.append(new_node.right) unless new_node.right.nil?
+
+          node_count -= 1
+        end
+      end
     end
 
-    def level_order_recursive
-      #    TODO
+    def level_order_recursive root_node
+      #Base case
+      if root_node.nil?
+        return 0
+      end
+
+      #Recurse on left child
+      left_depth = level_order_recursive(root_node.left)
+      #Recurse on right child
+      right_depth = level_order_recursive(root_node.right)
+
+      #Return whichever depth is greater
+      if left_depth > right_depth
+        return left_depth + 1
+      else
+        return right_depth + 1
+      end
     end
 
     def in_order
@@ -221,8 +257,6 @@ module BinarySearchTree
         pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true)
       end
     end
-      
-  
   end
 
 tree = Tree.new
