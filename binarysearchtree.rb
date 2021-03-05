@@ -22,7 +22,8 @@ module BinarySearchTree
 
       @root = build_tree(test_array)
       pretty_print()
-      puts(level_order_iterative(@root))
+      puts height_iterative(@root)
+      puts height_recursive(@root)
     end
   
     def build_tree array
@@ -174,7 +175,7 @@ module BinarySearchTree
       end
     end
 
-    def level_order_iterative root_node
+    def height_iterative root_node
       # Base case
       return 0 if root_node.nil?
 
@@ -200,51 +201,23 @@ module BinarySearchTree
       end
     end
 
-    def level_order_recursive root_node
-      #Base case
+    def height_recursive root_node
+      # Base case
       if root_node.nil?
         return 0
       end
 
-      #Recurse on left child
-      left_depth = level_order_recursive(root_node.left)
-      #Recurse on right child
-      right_depth = level_order_recursive(root_node.right)
+      # Recurse on left child
+      left_depth = height_recursive(root_node.left)
+      # Recurse on right child
+      right_depth = height_recursive(root_node.right)
 
-      #Return whichever depth is greater
+      # Return whichever depth is greater
       if left_depth > right_depth
-        return left_depth + 1
+        left_depth + 1
       else
-        return right_depth + 1
+        right_depth + 1
       end
-    end
-
-    def in_order
-      #    TODO
-    end
-
-    def pre_order
-      #    TODO
-    end
-
-    def post_order
-      #    TODO
-    end
-
-    def height
-      #    TODO
-    end
-
-    def depth
-      #    TODO
-    end
-
-    def balanced?
-      #    TODO
-    end
-
-    def rebalance
-      #    TODO
     end
 
     #    Prints out visualization of the tree
@@ -259,5 +232,5 @@ module BinarySearchTree
     end
   end
 
-tree = Tree.new
+  Tree.new
 end
